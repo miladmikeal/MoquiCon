@@ -3,7 +3,7 @@
 <moqui-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/moqui-conf-2.1.xsd">
     <screen-facade>
         <screen location="component://webroot/screen/webroot.xml">
-            <subscreens-item name="moquicon" menu-title="MoquiCon" menu-include="false" location="component://PopRestStore/screen/moquicon.xml"/>
+            <subscreens-item name="moquicon" menu-title="MoquiCon" menu-include="false" location="component://MoquiCon/screen/moquicon.xml"/>
         </screen>
     </screen-facade>
 </moqui-conf>

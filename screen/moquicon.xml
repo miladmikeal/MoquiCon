@@ -79,18 +79,18 @@ var storeInfo = ${storeInfoJson};
         <service-call name="popstore.CartServices.get#CartInfo" out-map="cartInfo" in-map="context"/>
 
         <!-- get settings used in subscreens -->
-        <set field="template_server_root" from="storeInfo.settings.template_server_root" default-value="component://PopRestStore/template/moquicon/root.html.ftl"/>
-        <set field="template_server_header" from="storeInfo.settings.template_server_header" default-value="component://PopRestStore/template/moquicon/navbar.html.ftl"/>
-        <set field="template_server_footer" from="storeInfo.settings.template_server_footer" default-value="component://PopRestStore/template/moquicon/footer.html.ftl"/>
-        <set field="template_server_home" from="storeInfo.settings.template_server_home" default-value="component://PopRestStore/template/moquicon/home.html.ftl"/>
-        <set field="template_server_tickets" from="storeInfo.settings.template_server_tickets" default-value="component://PopRestStore/template/moquicon/tickets.html.ftl"/>
-        <set field="template_server_venue" from="storeInfo.settings.template_server_venue" default-value="component://PopRestStore/template/moquicon/venue.html.ftl"/>
-        <set field="template_server_sponsors" from="storeInfo.settings.template_server_sponsors" default-value="component://PopRestStore/template/moquicon/sponsors.html.ftl"/>
-        <set field="template_server_schedule" from="storeInfo.settings.template_server_schedule" default-value="component://PopRestStore/template/moquicon/schedule.html.ftl"/>
-        <set field="template_server_category" from="storeInfo.settings.template_server_category" default-value="component://PopRestStore/template/moquicon/category.html.ftl"/>
-        <set field="template_server_product" from="storeInfo.settings.template_server_product" default-value="component://PopRestStore/template/moquicon/product.html.ftl"/>
-        <set field="template_server_contact" from="storeInfo.settings.template_server_contact" default-value="component://PopRestStore/template/moquicon/contact.html.ftl"/>
-        <set field="template_server_search" from="storeInfo.settings.template_server_search" default-value="component://PopRestStore/template/moquicon/search.html.ftl"/>
+        <set field="template_server_root" from="storeInfo.settings.template_server_root" default-value="component://MoquiCon/template/moquicon/root.html.ftl"/>
+        <set field="template_server_header" from="storeInfo.settings.template_server_header" default-value="component://MoquiCon/template/moquicon/navbar.html.ftl"/>
+        <set field="template_server_footer" from="storeInfo.settings.template_server_footer" default-value="component://MoquiCon/template/moquicon/footer.html.ftl"/>
+        <set field="template_server_home" from="storeInfo.settings.template_server_home" default-value="component://MoquiCon/template/moquicon/home.html.ftl"/>
+        <set field="template_server_tickets" from="storeInfo.settings.template_server_tickets" default-value="component://MoquiCon/template/moquicon/tickets.html.ftl"/>
+        <set field="template_server_venue" from="storeInfo.settings.template_server_venue" default-value="component://MoquiCon/template/moquicon/venue.html.ftl"/>
+        <set field="template_server_sponsors" from="storeInfo.settings.template_server_sponsors" default-value="component://MoquiCon/template/moquicon/sponsors.html.ftl"/>
+        <set field="template_server_schedule" from="storeInfo.settings.template_server_schedule" default-value="component://MoquiCon/template/moquicon/schedule.html.ftl"/>
+        <set field="template_server_category" from="storeInfo.settings.template_server_category" default-value="component://MoquiCon/template/moquicon/category.html.ftl"/>
+        <set field="template_server_product" from="storeInfo.settings.template_server_product" default-value="component://MoquiCon/template/moquicon/product.html.ftl"/>
+        <set field="template_server_contact" from="storeInfo.settings.template_server_contact" default-value="component://MoquiCon/template/moquicon/contact.html.ftl"/>
+        <set field="template_server_search" from="storeInfo.settings.template_server_search" default-value="component://MoquiCon/template/moquicon/search.html.ftl"/>
     </pre-actions>
 
     <widgets>
