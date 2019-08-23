@@ -198,6 +198,7 @@ General Order Placement and eCommerce Usage
     </service>
 
     <service verb="add" noun="Product" authenticate="anonymous-all">
+        <log message="\n\n\n\n\n\n\n\n ${quantity} \n\n\n\n\n\n\n\n\n\n\n"></log>
         <implements service="popstore.CartServices.get#CartInfo"/>
         <in-parameters>
             <parameter name="productId" required="true"/>
@@ -216,6 +217,7 @@ General Order Placement and eCommerce Usage
             <set field="defaultOrderParameters" from="[salesChannelEnumId:'ScWeb']" />
             <service-call name="mantle.order.OrderServices.add#OrderProductQuantity" in-map="context + defaultOrderParameters" out-map="addOut"/>
             <set field="sessionAttributes.cartOrderId" from="addOut.orderId"/>
+            <log message="\n\n\n\n\n\n\n\n ${quantity} \n\n\n\n\n\n\n\n\n\n\n"></log>
 
             <service-call name="popstore.CartServices.get#CartInfo" out-map="context"/>
         </actions>
