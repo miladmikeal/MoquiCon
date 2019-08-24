@@ -16,10 +16,10 @@
                 </p>
                 <hr class="hr">
                 <div class="row" v-for="item in productsInCart.orderItemList" :key="item.itemTypeEnumId + '' + item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
-                    <div class="col col-sm-2 d-none d-sm-block">
-                        <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
-                           class="mb-1"/>
-                    </div>
+<!--                    <div class="col col-sm-2 d-none d-sm-block">-->
+<!--                        <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"-->
+<!--                           class="mb-1"/>-->
+<!--                    </div>-->
                     <div class="col col-6 col-sm-5">
                         <p class="item-text-desc">
                             <a class="item-text-desc" :href="'product/' + item.productId">{{item.itemDescription}}</a>
@@ -184,7 +184,8 @@
                 <hr class="hr" :class="{ 'hr-active':isCurrentStep(STEP_SHIPPING), 'hr-complete':isCompleteStep(STEP_SHIPPING) }">
                 <div v-if="isCompleteStep(STEP_SHIPPING)" class="div-total">
                     <span class="span-description">
-                    {{shippingMethod.shipmentMethodDescription}}
+<!--                    {{shippingMethod.shipmentMethodDescription}}-->
+                        Digital
                     <span class="float-right" v-if="shippingMethod.shippingTotal">${{Number(shippingMethod.shippingTotal).toFixed(2)}}</span>
                     </span>
                 </div>
@@ -213,65 +214,65 @@
                 <br>
 
                 <!-- Payment method section -->
-                <p class="title-check-text" :class="{'step-active':isCurrentStep(STEP_BILLING), 'step-complete':isCompleteStep(STEP_BILLING)}">
-                    <span v-if="isIncompleteStep(STEP_BILLING)" class="circle">3</span>
-                    <span v-if="isCompleteStep(STEP_BILLING)" class="circle"><i class="fa fa-check"></i></span>
-                    <span class="text-address">PAYMENT METHODS</span>
-                    <span
-                        v-if="isCompleteStep(STEP_BILLING)"
-                        class="text-address change-info float-right"
-                        @click="setCurrentStep(STEP_BILLING)">
-                            Change
-                    </span>
-                </p>
-                <hr class="hr" :class="{'hr-active': isCurrentStep(STEP_BILLING), 'hr-complete':isCompleteStep(STEP_BILLING)}">
-                <div v-if="isCompleteStep(STEP_BILLING)" class="div-total">
-                    <span class="span-description">{{paymentMethod.description}}</span>
-                    <span class="span-description">{{paymentMethod.titleOnAccount}}</span>
-                    <span class="span-description">{{paymentMethod.expireMonth}}/{{paymentMethod.expireYear}}</span>
-                    <br>
-                    <template v-if="isCompleteStep(STEP_BILLING)">
-                        <span>Billing address:</span>
-                        <br>
-                        <span class="span-description">{{paymentMethod.toName}}</span>
-                        <span class="span-description">{{paymentMethod.address1}} {{paymentMethod.address2}}</span>
-                        <span class="span-description">{{paymentMethod.city}}</span>
-                        <span class="span-description"><i class="fa fa-phone phone-icon"></i>{{paymentMethod.contactNumber}}</span>
-                    </template>
-                </div>
-                <div v-if="isCurrentStep(STEP_BILLING)" id="paymentMethodCollapse" class="checkout-payment-methods-list">
-                    <div class="col" v-for="(item,index) in listPaymentMethods">
-                        <div class="row" :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">
-                            <label  :for="index + 'r3'" class="container-input col-11">
-                                <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" v-model="paymentOption"
-                                    @click="selectPaymentMethod(item), clearCvv()"/>
-                                <span class="checkmark"></span>
-                                <span class="span-description">{{item.paymentMethod.description}}</span>
-                                <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>
-                                <span class="span-description">Expires on {{item.creditCard.expireDate}}</span>
-                                <div v-if="paymentOption == item.paymentMethodId" class="input-group selected-card-cvv">
-                                    <input id="cvv" type="text" class="form-control col-4" v-model="cvv" placeholder="CVV" />
-                                    <div v-if="showCvvError" class="text-danger">Card security code must be either 3 or 4 numeric characters</div>
-                                </div>
-                            </label>
-                            <div @click="deletePaymentMethod(item.paymentMethodId)"
-                                class="delete-icon margin-top--10px col-1">
-                                <i class="fas fa-trash-alt"></i>
-                            </div>
-                        </div>
-                        <br />
-                    </div>
-                    <br />
-                    <a data-toggle="modal" data-target="#creditCardModal" class="text-add" @click="resetData()">
-                        Add a Credit Card
-                    </a>
-                    <button class="btn btn-continue float-right"
-                        @click="validateCvv()"
-                        :disabled="paymentOption == null || paymentOption == '' || listPaymentMethods == null ||
-                        listPaymentMethods.length == 0">
-                        Continue
-                    </button>
-                </div>
+<!--                <p class="title-check-text" :class="{'step-active':isCurrentStep(STEP_BILLING), 'step-complete':isCompleteStep(STEP_BILLING)}">-->
+<!--                    <span v-if="isIncompleteStep(STEP_BILLING)" class="circle">3</span>-->
+<!--                    <span v-if="isCompleteStep(STEP_BILLING)" class="circle"><i class="fa fa-check"></i></span>-->
+<!--                    <span class="text-address">PAYMENT METHODS</span>-->
+<!--                    <span-->
+<!--                        v-if="isCompleteStep(STEP_BILLING)"-->
+<!--                        class="text-address change-info float-right"-->
+<!--                        @click="setCurrentStep(STEP_BILLING)">-->
+<!--                            Change-->
+<!--                    </span>-->
+<!--                </p>-->
+<!--                <hr class="hr" :class="{'hr-active': isCurrentStep(STEP_BILLING), 'hr-complete':isCompleteStep(STEP_BILLING)}">-->
+<!--                <div v-if="isCompleteStep(STEP_BILLING)" class="div-total">-->
+<!--                    <span class="span-description">{{paymentMethod.description}}</span>-->
+<!--                    <span class="span-description">{{paymentMethod.titleOnAccount}}</span>-->
+<!--                    <span class="span-description">{{paymentMethod.expireMonth}}/{{paymentMethod.expireYear}}</span>-->
+<!--                    <br>-->
+<!--                    <template v-if="isCompleteStep(STEP_BILLING)">-->
+<!--                        <span>Billing address:</span>-->
+<!--                        <br>-->
+<!--                        <span class="span-description">{{paymentMethod.toName}}</span>-->
+<!--                        <span class="span-description">{{paymentMethod.address1}} {{paymentMethod.address2}}</span>-->
+<!--                        <span class="span-description">{{paymentMethod.city}}</span>-->
+<!--                        <span class="span-description"><i class="fa fa-phone phone-icon"></i>{{paymentMethod.contactNumber}}</span>-->
+<!--                    </template>-->
+<!--                </div>-->
+<!--                <div v-if="isCurrentStep(STEP_BILLING)" id="paymentMethodCollapse" class="checkout-payment-methods-list">-->
+<!--                    <div class="col" v-for="(item,index) in listPaymentMethods">-->
+<!--                        <div class="row" :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">-->
+<!--                            <label  :for="index + 'r3'" class="container-input col-11">-->
+<!--                                <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" v-model="paymentOption"-->
+<!--                                    @click="selectPaymentMethod(item), clearCvv()"/>-->
+<!--                                <span class="checkmark"></span>-->
+<!--                                <span class="span-description">{{item.paymentMethod.description}}</span>-->
+<!--                                <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>-->
+<!--                                <span class="span-description">Expires on {{item.creditCard.expireDate}}</span>-->
+<!--                                <div v-if="paymentOption == item.paymentMethodId" class="input-group selected-card-cvv">-->
+<!--                                    <input id="cvv" type="text" class="form-control col-4" v-model="cvv" placeholder="CVV" />-->
+<!--                                    <div v-if="showCvvError" class="text-danger">Card security code must be either 3 or 4 numeric characters</div>-->
+<!--                                </div>-->
+<!--                            </label>-->
+<!--                            <div @click="deletePaymentMethod(item.paymentMethodId)"-->
+<!--                                class="delete-icon margin-top&#45;&#45;10px col-1">-->
+<!--                                <i class="fas fa-trash-alt"></i>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <br />-->
+<!--                    </div>-->
+<!--                    <br />-->
+<!--                    <a data-toggle="modal" data-target="#creditCardModal" class="text-add" @click="resetData()">-->
+<!--                        Add a Credit Card-->
+<!--                    </a>-->
+<!--                    <button class="btn btn-continue float-right"-->
+<!--                        @click="validateCvv()"-->
+<!--                        :disabled="paymentOption == null || paymentOption == '' || listPaymentMethods == null ||-->
+<!--                        listPaymentMethods.length == 0">-->
+<!--                        Continue-->
+<!--                    </button>-->
+<!--                </div>-->
                 <br>
                 <p class="title-check-text" :class="{'step-active':isCurrentStep(STEP_REVIEW), 'step-complete':isCompleteStep(STEP_REVIEW)}">
                     <span v-if="isIncompleteStep(STEP_REVIEW)" class="circle">4</span>

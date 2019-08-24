@@ -1,16 +1,16 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
 const STEP_ADDRESS = "shipping-address";
 const STEP_SHIPPING = "shipping-method";
-const STEP_BILLING = "payment-methods";
+//const STEP_BILLING = "payment-methods";
 const STEP_REVIEW = "review-purchase";
 const STEP_PENDING = "pending";
 const STEP_SUCCESS = "success";
-const STEPS = [STEP_ADDRESS, STEP_SHIPPING, STEP_BILLING, STEP_REVIEW, STEP_PENDING, STEP_SUCCESS];
+const STEPS = [STEP_ADDRESS, STEP_SHIPPING, STEP_REVIEW, STEP_PENDING, STEP_SUCCESS];
 
 
 storeComps.CheckoutNavbar = {
   name: "checkout-navbar",
-  data: function() { return {STEP_ADDRESS: STEP_ADDRESS, STEP_SHIPPING: STEP_SHIPPING, STEP_BILLING: STEP_BILLING, STEP_REVIEW: STEP_REVIEW, STEP_PENDING: STEP_PENDING, STEP_SUCCESS: STEP_SUCCESS, STEPS: STEPS} },
+  data: function() { return {STEP_ADDRESS: STEP_ADDRESS, STEP_SHIPPING: STEP_SHIPPING, STEP_REVIEW: STEP_REVIEW, STEP_PENDING: STEP_PENDING, STEP_SUCCESS: STEP_SUCCESS, STEPS: STEPS} },
   props: ["option"],
   methods: {
         getCurrentStep: function() {
@@ -126,7 +126,7 @@ storeComps.CheckOutPage = {
 
                     // Look for shipping option
                     var option = this.listShippingOptions?
-                               this.listShippingOptions.find(function(item) {return item.shipmentMethodDescription == "Ground Parcel"}):0;
+                               this.listShippingOptions.find(function(item) {return item.shipmentMethodDescription == "Digital"}):0;
 
                     // Update the shipping option value
                     if(!!option){
@@ -185,7 +185,7 @@ storeComps.CheckOutPage = {
         },
         shippingContinue: function() {
             this.addCartBillingShipping();
-            this.setCurrentStep(STEP_BILLING)
+            // this.setCurrentStep(STEP_REVIEW)
         },
         validateCvv: function () {
             var isCvvValid = new RegExp("^\\d{3,4}$").test(this.cvv);
@@ -231,18 +231,18 @@ storeComps.CheckOutPage = {
                     this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
                 } else {
                     this.showModal("modal-error");
-                    this.setCurrentStep(STEP_BILLING);
+                    this.setCurrentStep(STEP_REVIEW);
                 }
                 if(data.messages.includes("error") && data.messages.includes("122")) {
                     this.responseMessage = "Please provide a valid Billing ZIP";
-                    this.setCurrentStep(STEP_BILLING);
+                    this.setCurrentStep(STEP_REVIEW);
                 } else {
                     this.responseMessage = data.messages;
                 }
             }.bind(this)).catch(function (error) {
                 this.responseMessage = error;
                 this.showModal("modal-error");
-                this.setCurrentStep(STEP_BILLING);
+                this.setCurrentStep(STEP_REVIEW);
             }.bind(this));
         },
         applyPromotionCode: function() {

@@ -3,7 +3,7 @@
         <div class="container d-flex flex-row main-navbar">
             <a class="navbar-brand" href="/store">
                 <img height="65px" class="moqui-logo" src="/moquicon/assets/moqui-logo.svg" alt="">
-                <span class="font-italic order-navbar-title">POP Shop</span>
+                <span class="font-italic order-navbar-title">MoquiCon</span>
             </a>
             <div class="navbar-collapse collapse" id="nav_collapse">
                 <ul class="navbar-nav ml-auto">
@@ -24,11 +24,11 @@
                     </span>
                     <hr width="100px" class="order-navbar-hr">
                     <span class="order-navbar-circle"
-                        :class="{ 'order-navbar-circle-red': isCurrentStep(STEP_BILLING), 'order-navbar-circle-blue': isCompleteStep(STEP_BILLING) }">
-                        <span v-if="isIncompleteStep(STEP_BILLING)">3</span>
-                        <span v-if="isCompleteStep(STEP_BILLING)"><i class="fa fa-check"></i></span>
+                        :class="{ 'order-navbar-circle-red': isCurrentStep(STEP_SHIPPING), 'order-navbar-circle-blue': isCompleteStep(STEP_SHIPPING) }">
+                        <span v-if="isIncompleteStep(STEP_SHIPPING)">3</span>
+                        <span v-if="isCompleteStep(STEP_SHIPPING)"><i class="fa fa-check"></i></span>
                         <span class="order-navbar-text"
-                            :class="{ 'order-navbar-text-red': isCurrentStep(STEP_BILLING), 'order-navbar-text-blue': isCompleteStep(STEP_BILLING) }">Payment</span>
+                            :class="{ 'order-navbar-text-red': isCurrentStep(STEP_SHIPPING), 'order-navbar-text-blue': isCompleteStep(STEP_SHIPPING) }">Payment</span>
                     </span>
                     <hr width="100px" class="order-navbar-hr">
                     <span class="order-navbar-circle"
