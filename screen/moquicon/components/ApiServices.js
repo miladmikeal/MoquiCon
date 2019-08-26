@@ -89,7 +89,7 @@ var ProductService = {
         return axios.post("/rest/s1/pop/cart/billingShipping",data,headers).then(function (response) { return response.data; });
     },
     getCartShippingOptions: function(headers) {
-        return axios.get("/rest/s1/pop/cart/shippingOptions", headers).then(function (response) { return response.data; });
+        return axios.get("/rest/s1/pop/cart/shippingOptions", headers).then(function (response) { return response.data; }).catch(err => console.log(err));
     },
     placeCartOrder: function(data, headers) {
         return axios.post("/rest/s1/pop/cart/place",data,headers).then(function (response) { return response.data; });

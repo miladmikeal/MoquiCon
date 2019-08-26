@@ -1,18 +1,18 @@
 /* This software is in the public domain under CC0 1.0 Universal plus a Grant of Patent License. */
 const STEP_ADDRESS = "shipping-address";
 const STEP_SHIPPING = "shipping-method";
-//const STEP_BILLING = "payment-methods";
+const STEP_BILLING = "payment-methods";
 const STEP_REVIEW = "review-purchase";
 const STEP_PENDING = "pending";
 const STEP_SUCCESS = "success";
-const STEPS = [STEP_ADDRESS, STEP_SHIPPING, STEP_REVIEW, STEP_PENDING, STEP_SUCCESS];
+const STEPS = [STEP_ADDRESS, STEP_SHIPPING, STEP_BILLING, STEP_REVIEW, STEP_PENDING, STEP_SUCCESS];
 
 
 storeComps.CheckoutNavbar = {
-  name: "checkout-navbar",
-  data: function() { return {STEP_ADDRESS: STEP_ADDRESS, STEP_SHIPPING: STEP_SHIPPING, STEP_REVIEW: STEP_REVIEW, STEP_PENDING: STEP_PENDING, STEP_SUCCESS: STEP_SUCCESS, STEPS: STEPS} },
-  props: ["option"],
-  methods: {
+    name: "checkout-navbar",
+    data: function() { return {STEP_ADDRESS: STEP_ADDRESS, STEP_SHIPPING: STEP_SHIPPING, STEP_BILLING: STEP_BILLING, STEP_REVIEW: STEP_REVIEW, STEP_PENDING: STEP_PENDING, STEP_SUCCESS: STEP_SUCCESS, STEPS: STEPS} },
+    props: ["option"],
+    methods: {
         getCurrentStep: function() {
             var step =  window.location.hash ? window.location.hash.split("/")[2] : this.STEP_ADDRESS;
             return  (this.STEPS.indexOf(step) > -1) ? step : this.STEP_ADDRESS;
@@ -55,15 +55,65 @@ storeComps.CheckOutPage = {
     name: "checkout-page",
     extends: storeComps.CheckoutNavbar,
     data: function() { return {
-            cvv: "", showCvvError: false, homePath: "", storePath: "", customerInfo: {}, productsInCart: {}, shippingAddress: {}, shippingAddressSelect: {}, paymentMethod: {}, shippingMethod: {}, showProp65: "false",
-            billingAddress: {}, billingAddressOption: "", listShippingAddress: [], listPaymentMethods: [],  promoCode: "", promoError: "", postalAddressStateGeoSelected: null,
-            countriesList: [], regionsList: [], shippingOption: "", addressOption: "", paymentOption: "", isSameAddress: "0", shippingItemPrice: 0,
-            isUpdate: false, isSpinner: false, responseMessage: "", toNameErrorMessage: "", countryErrorMessage: "", addressErrorMessage: "", 
-            cityErrorMessage: "", stateErrorMessage: "", postalCodeErrorMessage: "", contactNumberErrorMessage: "", paymentId: 0, 
-            freeShipping:false, promoSuccess: "", loading: false,
-            listShippingOptions: [],  axiosConfig: { headers: { "Content-Type": "application/json;charset=UTF-8", "Access-Control-Allow-Origin": "*",
-            "api_key":this.$root.apiKey, "moquiSessionToken":this.$root.moquiSessionToken } }
-        };
+        cvv: "888",
+        showCvvError: false,
+        homePath: "",
+        storePath: "",
+        customerInfo: {},
+        productsInCart: {},
+        shippingAddress: {},
+        shippingAddressSelect: {},
+        paymentMethod: {
+            cardNumber: "4242424242424242",
+            cardSecurityCode: "888",
+            description: "Visa 4242424242424242",
+            expireMonth: "04",
+            expireYear: "2023",
+            paymentMethodId: "100563",
+            paymentMethodTypeEnumId: undefined,
+            postalContactMechId: "101940",
+            telecomContactMechId: "101939",
+            titleOnAccount: "Ken Ken"
+        },
+        shippingMethod: {},
+        showProp65: "false",
+        billingAddress: {},
+        billingAddressOption: "",
+        listShippingAddress: [],
+        listPaymentMethods: [],
+        promoCode: "",
+        promoError: "",
+        postalAddressStateGeoSelected: null,
+        countriesList: [],
+        regionsList: [],
+        shippingOption: "",
+        addressOption: "",
+        paymentOption: "",
+        isSameAddress: "0",
+        shippingItemPrice: 0,
+        isUpdate: false,
+        isSpinner: false,
+        responseMessage: "",
+        toNameErrorMessage: "",
+        countryErrorMessage: "",
+        addressErrorMessage: "",
+        cityErrorMessage: "",
+        stateErrorMessage: "",
+        postalCodeErrorMessage: "",
+        contactNumberErrorMessage: "",
+        paymentId: 0,
+        freeShipping:false,
+        promoSuccess: "",
+        loading: false,
+        listShippingOptions: [],
+        axiosConfig: {
+            headers: { "Content-Type": "application/json;charset=UTF-8",
+                "Access-Control-Allow-Origin": "*",
+                "api_key":this.$root.apiKey,
+                "moquiSessionToken":this.$root.moquiSessionToken
+            }
+        }
+    };
     },
     computed: {
         shippingPrice: function () {
@@ -107,7 +157,7 @@ storeComps.CheckOutPage = {
          * "postalContactMechId" : "CustJqpAddr",
          * "paymentMethodId" : "100004",
          * "telecomContactMechId" : "CustJqpTeln"
-        **/
+         **/
         onCreditCardSet: function(data) {
             this.getCustomerPaymentMethods();
             this.hideModal("creditCardModal");
@@ -126,7 +176,7 @@ storeComps.CheckOutPage = {
 
                     // Look for shipping option
                     var option = this.listShippingOptions?
-                               this.listShippingOptions.find(function(item) {return item.shipmentMethodDescription == "Digital"}):0;
+                        this.listShippingOptions.find(function(item) {return item.shipmentMethodDescription == "Digital"}):0;
 
                     // Update the shipping option value
                     if(!!option){
@@ -175,7 +225,7 @@ storeComps.CheckOutPage = {
         setShippingItemPrice: function(){
             // Retrieve the ItemShipping from orderItemList
             var item = this.productsInCart.orderItemList?
-                       this.productsInCart.orderItemList.find(function(item) {return item.itemTypeEnumId == 'ItemShipping'; }):0;
+                this.productsInCart.orderItemList.find(function(item) {return item.itemTypeEnumId == 'ItemShipping'; }):0;
             // Parse the default value retrieved from orderItemList setting two decimal
             this.shippingItemPrice = parseFloat(item? item.unitAmount : 0);
         },
@@ -185,7 +235,8 @@ storeComps.CheckOutPage = {
         },
         shippingContinue: function() {
             this.addCartBillingShipping();
-            // this.setCurrentStep(STEP_REVIEW)
+            this.setCurrentStep(STEP_BILLING)
+            this.validateCvv()
         },
         validateCvv: function () {
             var isCvvValid = new RegExp("^\\d{3,4}$").test(this.cvv);
@@ -218,7 +269,7 @@ storeComps.CheckOutPage = {
                 .then(function (data) {
                     this.listPaymentMethods = data.methodInfoList;
                     this.getCartInfo();
-            }.bind(this));
+                }.bind(this));
         },
         placeCartOrder: function() {
             var data = { cardSecurityCodeByPaymentId: {} };
@@ -231,18 +282,18 @@ storeComps.CheckOutPage = {
                     this.$router.push({ name: 'successcheckout', params: { orderId: data.orderHeader.orderId }});
                 } else {
                     this.showModal("modal-error");
-                    this.setCurrentStep(STEP_REVIEW);
+                    this.setCurrentStep(STEP_BILLING);
                 }
                 if(data.messages.includes("error") && data.messages.includes("122")) {
                     this.responseMessage = "Please provide a valid Billing ZIP";
-                    this.setCurrentStep(STEP_REVIEW);
+                    this.setCurrentStep(STEP_BILLING);
                 } else {
                     this.responseMessage = data.messages;
                 }
             }.bind(this)).catch(function (error) {
                 this.responseMessage = error;
                 this.showModal("modal-error");
-                this.setCurrentStep(STEP_REVIEW);
+                this.setCurrentStep(STEP_BILLING);
             }.bind(this));
         },
         applyPromotionCode: function() {
@@ -269,7 +320,7 @@ storeComps.CheckOutPage = {
             this.loading = true;
             var data = { "orderId": item.orderId, "orderItemSeqId": item.orderItemSeqId, "quantity": item.quantity };
             ProductService.updateProductQuantity(data, this.axiosConfig)
-                .then(function (data) { 
+                .then(function (data) {
                     this.getCartInfo();
                     this.getCartShippingOptions();
                 }.bind(this));
@@ -321,18 +372,7 @@ storeComps.CheckOutPage = {
             this.responseMessage = "";
         },
         selectPaymentMethod: function(method) {
-            this.paymentMethod = {};
-            this.paymentMethod.paymentMethodId = method.paymentMethodId;
-            this.paymentMethod.description = method.paymentMethod.description;
-            this.paymentMethod.paymentMethodTypeEnumId = method.paymentMethod.PmtCreditCard;
-            this.paymentMethod.cardNumber = method.creditCard.cardNumber;
-            this.paymentMethod.titleOnAccount = method.paymentMethod.titleOnAccount;
-            this.paymentMethod.expireMonth = method.expireMonth;
-            this.paymentMethod.expireYear = method.expireYear;
-            this.paymentMethod.cardSecurityCode = "";
-            this.paymentMethod.postalContactMechId = method.paymentMethod.postalContactMechId;
-            this.paymentMethod.telecomContactMechId = method.paymentMethod.telecomContactMechId;
-            this.responseMessage = "";
+            return
         },
         hideModal: function(modalId) { $('#'+modalId).modal('hide'); },
         showModal: function(modalId) { $('#'+modalId).modal('show'); },
@@ -369,7 +409,8 @@ storeComps.CheckOutPage = {
             this.getCartShippingOptions();
             this.getCustomerShippingAddresses();
             this.getCustomerPaymentMethods();
-            this.getRegions('USA');  
+            this.getRegions('USA');
+            console.log("\n\n\n\n", this, "\n\n\n\n")
         }
     }
 };
