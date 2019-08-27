@@ -26,7 +26,7 @@
         <div id="nav_collapse1" class="container navbar-collapse collapse">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/moquicon/tickets/MOQUICON_TICKET_2019">
+                    <a class="nav-link" href="/moquicon/tickets/MOQUICON_TICKET_2019V">
                         Tickets
                     </a>
                 </li>
