@@ -36,13 +36,15 @@
                             <span class="place-order-total"> Save
                                 ${{(item.unitListPrice - item.unitAmount).toFixed(2)}}</span>
                         </p>
+
                     </div>
                     <div class="col col-3 col-sm-2">
                         <input class="input-quantity form-control" id="quantity" @change="updateProductQuantity(item)"
                             type="text" v-model="item.quantity" :disabled="item.itemTypeEnumId != 'ItemProduct'" />
                     </div>
                     <div class="col col-3 col-sm-3 text-right">
-                        <div class="place-order-total pr-4">${{item.unitAmount.toFixed(2)}}</div>
+                        <div class="place-order-total pr-4">
+                            {{item.unitAmount !==0 ? "$" + item.unitAmount.toFixed(2) : "FREE"}}</div>
                         <div class="item-actions pr-4" @click="deleteOrderProduct(item)"
                             v-if="item.itemTypeEnumId=='ItemProduct'">
                             <span>Delete</span>
@@ -54,7 +56,9 @@
                 <div class="row div-total">
                     <span class="col col-9 col-lg-9">Subtotal</span>
                     <span class="col col-3 col-lg-3 text-right" v-if="productsInCart.orderPart">
-                        <span class="pr-4">${{(productsInCart.orderPart.partTotal - shippingPrice).toFixed(2)}}</span>
+                        <span
+                            class="pr-4">{{(productsInCart.orderPart.partTotal - shippingPrice) !== 0 ? ("$" + (productsInCart.orderPart.partTotal - shippingPrice).toFixed(2)) : "FREE"}}
+                        </span>
                     </span>
                 </div>
                 <hr>
@@ -70,7 +74,8 @@
                     <span class="col col-9 col-lg-9 mt-3 mb-5">Total</span>
                     <span class="col col-3 col-lg-3 mt-3 text-right place-order-total"
                         v-if="productsInCart.orderHeader">
-                        <span class="pr-4">${{productsInCart.orderHeader.grandTotal.toFixed(2)}}</span>
+                        <span
+                            class="pr-4">{{productsInCart.orderHeader.grandTotal !== 0 ? "$" + productsInCart.orderHeader.grandTotal.toFixed(2) : "FREE"}}</span>
                     </span>
                 </div>
 
@@ -80,23 +85,6 @@
                     <prop65-warning />
                 </div>
 
-                <div class="row">
-                    <p class="col">Do you have a Promotion Code?</p>
-                </div>
-                <div class="row">
-                    <div class="input-group col">
-                        <input type="text" class="col-lg-9 form-control" placeholder="Enter it here..."
-                            aria-label="Input group promotion" aria-describedby="btnGroupAddon" name="promoCode"
-                            id="promoCode" v-model="promoCode">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-info" @click="applyPromotionCode">Apply</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <span v-if="promoError" class="col text-danger">{{promoError}}</span>
-                    <span v-else class="col text-green">{{promoSuccess}}</span>
-                </div>
                 <div class="row mt-5">
                     <contact-info />
                 </div>
@@ -318,7 +306,7 @@
                     <button class="btn btn-place-order col col-lg-12" @click="placeCartOrder()">Place Order</button>
                 </div>
                 <div class="text-center" v-if="!isCurrentStep(STEP_PENDING)">
-                    <a :href="storePath" class="btn text-add">Keep Shopping</a>
+                    <a :href="storePath" class="btn btn-outline-info text-add">Keep Shopping</a>
                 </div>
             </div>
         </div>

@@ -12,9 +12,9 @@
                 <div v-if="item.itemTypeEnumId != 'ItemShipping'" v-for="(item, index) in orderList.orderItemList"
                     class="row">
                     <div class="col col-lg-8">
-                        <product-image v-if="item.itemTypeEnumId=='ItemProduct'" :productId="item.productId"
+                        <!-- <product-image v-if="item.itemTypeEnumId=='ItemProduct'" :productId="item.productId"
                             class="mb-1" />
-                        <span v-else></span>
+                        <span v-else></span> -->
                         <router-link v-if="item.itemTypeEnumId == 'ItemProduct'" class="order-link-text pl-3 align-top"
                             :to="'/product/'+item.productId" tag="span">
                             {{item.itemDescription}}
@@ -96,15 +96,15 @@
                     </span>
                 </div>
                 <hr class="hr-title">
-<!--                <div class="row ">-->
-<!--                    <span class="col text-blight">BILLED TO:</span>-->
-<!--                    <span class="col text-gdark">-->
-<!--                        <span class="text-uppercase">-->
-<!--                            {{orderList.paymentInfoList[0].paymentMethod.titleOnAccount}}-->
-<!--                        </span><br>-->
-<!--                        {{orderList.paymentInfoList[0].paymentMethod.description}}<br>-->
-<!--                    </span>-->
-<!--                </div>-->
+                <!--                <div class="row ">-->
+                <!--                    <span class="col text-blight">BILLED TO:</span>-->
+                <!--                    <span class="col text-gdark">-->
+                <!--                        <span class="text-uppercase">-->
+                <!--                            {{orderList.paymentInfoList[0].paymentMethod.titleOnAccount}}-->
+                <!--                        </span><br>-->
+                <!--                        {{orderList.paymentInfoList[0].paymentMethod.description}}<br>-->
+                <!--                    </span>-->
+                <!--                </div>-->
                 <div class="row justify-content-center mt-5">
                     <a class="btn btn-block btn-info btn-lg btn-keep-shoping" :href="homePath">Back to Home</a>
                 </div>
