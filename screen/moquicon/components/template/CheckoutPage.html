@@ -26,17 +26,21 @@
                 <hr class="hr">
                 <div class="row" v-for="item in productsInCart.orderItemList"
                     :key="item.itemTypeEnumId + '' + item.productId" v-if="item.itemTypeEnumId != 'ItemShipping'">
+                    <!-- <div class="col col-sm-2 d-none d-sm-block">
+                        <product-image :productId="item.productId" v-if="item.itemTypeEnumId=='ItemProduct'"
+                            class="mb-1"/>
+                    </div> -->
                     <div class="col col col-sm-7">
                         <p class="item-text-desc">
                             <a class="item-text-desc" :href="'product/' + item.productId">{{item.itemDescription}}</a>
                         </p>
                         <p v-if="item.unitListPrice && ((item.unitListPrice - item.unitAmount) != 0)"
                             class="last-price">
-                            <del>${{item.unitListPrice}}</del>
+                            <del>{{ item.unitListPrice !== 0 ? "$" + item.unitListPrice.toFixed(2) : "FREE" }}</del>
                             <span class="place-order-total"> Save
                                 ${{(item.unitListPrice - item.unitAmount).toFixed(2)}}</span>
-                        </p>
 
+                        </p>
                     </div>
                     <div class="col col-3 col-sm-2">
                         <input class="input-quantity form-control" id="quantity" @change="updateProductQuantity(item)"
@@ -44,7 +48,8 @@
                     </div>
                     <div class="col col-3 col-sm-3 text-right">
                         <div class="place-order-total pr-4">
-                            {{item.unitAmount !==0 ? "$" + item.unitAmount.toFixed(2) : "FREE"}}</div>
+                            {{ item.unitAmount !== 0 ? "$" + item.unitAmount.toFixed(2) : "FREE" }}</div>
+
                         <div class="item-actions pr-4" @click="deleteOrderProduct(item)"
                             v-if="item.itemTypeEnumId=='ItemProduct'">
                             <span>Delete</span>
@@ -57,8 +62,8 @@
                     <span class="col col-9 col-lg-9">Subtotal</span>
                     <span class="col col-3 col-lg-3 text-right" v-if="productsInCart.orderPart">
                         <span
-                            class="pr-4">{{(productsInCart.orderPart.partTotal - shippingPrice) !== 0 ? ("$" + (productsInCart.orderPart.partTotal - shippingPrice).toFixed(2)) : "FREE"}}
-                        </span>
+                            class="pr-4">{{(productsInCart.orderPart.partTotal - shippingPrice) !== 0 ? "$" + (productsInCart.orderPart.partTotal - shippingPrice).toFixed(2) : "FREE"}}</span>
+
                     </span>
                 </div>
                 <hr>
@@ -75,7 +80,8 @@
                     <span class="col col-3 col-lg-3 mt-3 text-right place-order-total"
                         v-if="productsInCart.orderHeader">
                         <span
-                            class="pr-4">{{productsInCart.orderHeader.grandTotal !== 0 ? "$" + productsInCart.orderHeader.grandTotal.toFixed(2) : "FREE"}}</span>
+                            class="pr-4">{{ productsInCart.orderHeader.grandTotal !== 0 ? "$" + productsInCart.orderHeader.grandTotal.toFixed(2) : "FREE" }}
+                        </span>
                     </span>
                 </div>
 
@@ -85,6 +91,21 @@
                     <prop65-warning />
                 </div>
 
+                <!-- <div class="row">
+                    <p class="col">Do you have a Promotion Code?</p>
+                </div>
+                <div class="row">
+                    <div class="input-group col">
+                        <input type="text" class="col-lg-9 form-control" placeholder="Enter it here..." aria-label="Input group promotion" aria-describedby="btnGroupAddon" name="promoCode" id="promoCode" v-model="promoCode">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-info" @click="applyPromotionCode">Apply</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <span v-if="promoError" class="col text-danger">{{promoError}}</span>
+                    <span v-else class="col text-green">{{promoSuccess}}</span>
+                </div> -->
                 <div class="row mt-5">
                     <contact-info />
                 </div>
@@ -195,7 +216,8 @@
                     :class="{ 'hr-active':isCurrentStep(STEP_SHIPPING), 'hr-complete':isCompleteStep(STEP_SHIPPING) }">
                 <div v-if="isCompleteStep(STEP_SHIPPING)" class="div-total">
                     <span class="span-description">
-                        {{shippingMethod.shipmentMethodDescription}}
+                        <!--                    {{shippingMethod.shipmentMethodDescription}}-->
+                        Digital
                         <span class="float-right"
                             v-if="shippingMethod.shippingTotal">${{Number(shippingMethod.shippingTotal).toFixed(2)}}</span>
                     </span>
@@ -219,7 +241,9 @@
                         </div>
                     </div>
                     <br>
-                    <button @click="shippingContinue()" class="btn btn-continue float-right" style="margin-top: -15px;">
+                    <button @click="shippingContinue()" class="btn btn-continue float-right"
+                        :disabled="shippingOption == null || shippingOption == '' ||  listShippingOptions == null || listShippingOptions.length == 0"
+                        style="margin-top: -15px;">
                         <!-- Style needed to keep button away from next section -->
                         Continue
                     </button>
@@ -232,9 +256,9 @@
                 <!--                    <span v-if="isCompleteStep(STEP_BILLING)" class="circle"><i class="fa fa-check"></i></span>-->
                 <!--                    <span class="text-address">PAYMENT METHODS</span>-->
                 <!--                    <span-->
-                <!--                            v-if="isCompleteStep(STEP_BILLING)"-->
-                <!--                            class="text-address change-info float-right"-->
-                <!--                            @click="setCurrentStep(STEP_BILLING)">-->
+                <!--                        v-if="isCompleteStep(STEP_BILLING)"-->
+                <!--                        class="text-address change-info float-right"-->
+                <!--                        @click="setCurrentStep(STEP_BILLING)">-->
                 <!--                            Change-->
                 <!--                    </span>-->
                 <!--                </p>-->
@@ -258,7 +282,7 @@
                 <!--                        <div class="row" :class="{ 'div-checkmark': paymentOption == item.paymentMethodId }">-->
                 <!--                            <label  :for="index + 'r3'" class="container-input col-11">-->
                 <!--                                <input :id="index + 'r3'"  type="radio" :value="item.paymentMethodId" v-model="paymentOption"-->
-                <!--                                       @click="selectPaymentMethod(item), clearCvv()"/>-->
+                <!--                                    @click="selectPaymentMethod(item), clearCvv()"/>-->
                 <!--                                <span class="checkmark"></span>-->
                 <!--                                <span class="span-description">{{item.paymentMethod.description}}</span>-->
                 <!--                                <span class="span-description">{{item.paymentMethod.titleOnAccount}}</span>-->
@@ -269,7 +293,7 @@
                 <!--                                </div>-->
                 <!--                            </label>-->
                 <!--                            <div @click="deletePaymentMethod(item.paymentMethodId)"-->
-                <!--                                 class="delete-icon margin-top&#45;&#45;10px col-1">-->
+                <!--                                class="delete-icon margin-top&#45;&#45;10px col-1">-->
                 <!--                                <i class="fas fa-trash-alt"></i>-->
                 <!--                            </div>-->
                 <!--                        </div>-->
@@ -280,15 +304,16 @@
                 <!--                        Add a Credit Card-->
                 <!--                    </a>-->
                 <!--                    <button class="btn btn-continue float-right"-->
-                <!--                            @click="validateCvv()"-->
-                <!--                            >-->
+                <!--                        @click="validateCvv()"-->
+                <!--                        :disabled="paymentOption == null || paymentOption == '' || listPaymentMethods == null ||-->
+                <!--                        listPaymentMethods.length == 0">-->
                 <!--                        Continue-->
                 <!--                    </button>-->
                 <!--                </div>-->
                 <br>
                 <p class="title-check-text"
                     :class="{'step-active':isCurrentStep(STEP_REVIEW), 'step-complete':isCompleteStep(STEP_REVIEW)}">
-                    <span v-if="isIncompleteStep(STEP_REVIEW)" class="circle">3</span>
+                    <span v-if="isIncompleteStep(STEP_REVIEW)" class="circle">4</span>
                     <span v-if="isCompleteStep(STEP_REVIEW)" class="circle"><i class="fa fa-check"></i></span>
                     <span class="text-address">COMPLETE PURCHASE</span>
                 </p>
@@ -306,7 +331,7 @@
                     <button class="btn btn-place-order col col-lg-12" @click="placeCartOrder()">Place Order</button>
                 </div>
                 <div class="text-center" v-if="!isCurrentStep(STEP_PENDING)">
-                    <a :href="storePath" class="btn btn-outline-info text-add">Back to Home</a>
+                    <a :href="storePath" class="btn text-add">Keep Shopping</a>
                 </div>
             </div>
         </div>
